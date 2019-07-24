@@ -36,6 +36,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.sql.DataSource;
 
@@ -67,8 +68,9 @@ public class Main {
     return "index";
   }
   
-  @RequestMapping("/db")
-  String db(int id) throws SQLException {
+  @RequestMapping(value="/db", method=RequestMethod.GET)
+  JsonArray db(int id) throws SQLException {
+	JsonArray array = null;
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM filmInfo where id = " + id);
@@ -85,10 +87,10 @@ public class Main {
     	  jab.add(job);
       }
       
-      JsonArray array = jab.build();
+      array = jab.build();
 
     }
-	return dbUrl;
+	return array;
   }
 
   @Bean
