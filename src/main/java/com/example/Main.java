@@ -68,7 +68,7 @@ public class Main {
     return "index";
   }
   
-  @RequestMapping(value="/db", method=RequestMethod.GET)
+  @RequestMapping(value="/db/{id}", method=RequestMethod.GET)
   JsonArray db(int id) throws SQLException {
 	JsonArray array = null;
     try (Connection connection = dataSource.getConnection()) {
