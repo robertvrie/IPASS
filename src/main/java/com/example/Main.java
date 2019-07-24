@@ -19,6 +19,12 @@ package com.example;
 import com.zaxxer.hikari.HikariConfig;
 import static javax.measure.unit.SI.KILOGRAM;
 import javax.measure.quantity.Mass;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.jscience.physics.model.RelativisticModel;
 import org.jscience.physics.amount.Amount;
 import com.zaxxer.hikari.HikariDataSource;
@@ -31,6 +37,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sql.DataSource;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,6 +59,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
   }
+  
 
   @RequestMapping("/")
   String index() {
@@ -61,9 +70,7 @@ public class Main {
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM filmInfo");
 
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
@@ -92,10 +99,12 @@ public class Main {
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
       RelativisticModel.select();
-      Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
-      model.put("science", "E=mc^2: 12 GeV = " + m.toString());
+      String energy = System.getenv().get("ENERGY");
+      if (energy == null) {
+         energy = "12 GeV";
+      }
+      Amount<Mass> m = Amount.valueOf(energy).to(KILOGRAM);
+      model.put("science", "E=mc^2: " + energy + " = "  + m.toString());
       return "hello";
   }
-  
-
 }

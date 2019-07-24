@@ -2,7 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'hello')}">
 <body>
   <div class="container">
-    <p th:text="${science}"/>
+    <form action="SessionServlet.do" mehtod="get">
+		<div>
+			<input type="text" name="attributeValue">
+			<input type="submit" value="Verstuur">
+		</div>
   </div>
 </body>
 </html>
