@@ -24,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.json.*;
 
 import org.jscience.physics.model.RelativisticModel;
 import org.jscience.physics.amount.Amount;
@@ -65,24 +66,29 @@ public class Main {
   String index() {
     return "index";
   }
-
+  
   @RequestMapping("/db")
-  String db(Map<String, Object> model) {
+  String db(int id) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      ResultSet rs = stmt.executeQuery("SELECT * FROM filmInfo");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM filmInfo where id = " + id);
+      
+      JsonArrayBuilder jab = Json.createArrayBuilder();
 
-      ArrayList<String> output = new ArrayList<String>();
+      ArrayList<FilmInfo> output = new ArrayList<FilmInfo>();
       while (rs.next()) {
-        output.add("Read from DB: " + rs);
+    	  FilmInfo filmInfoObject = new FilmInfo();
+    	  JsonObjectBuilder job = Json.createObjectBuilder();
+    	
+    	  job.add("naam", ((FilmInfo) rs).getNaam());
+    	  
+    	  jab.add(job);
       }
+      
+      JsonArray array = jab.build();
 
-      model.put("records", output);
-      return "db";
-    } catch (Exception e) {
-      model.put("message", e.getMessage());
-      return "error";
     }
+	return dbUrl;
   }
 
   @Bean
