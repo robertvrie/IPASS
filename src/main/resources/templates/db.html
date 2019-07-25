@@ -11,5 +11,17 @@
   </ul>
 </div>
 
+<div>
+	<button name="button">Klik hier voor Avengers</button>
+	<script>
+		document.querySelector('#button').addEventListener("click", function(){ 
+			fetch("db/Avengers: Endgame")
+				.then(response => response.json())
+				.then(function(myJson){
+					var textnode = document.createTextNode(myJson.naam);
+					document.querySelector("body").append(textnode);
+				});
+		})
+	</script>
 </body>
 </html>
