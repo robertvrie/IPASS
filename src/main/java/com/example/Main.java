@@ -35,8 +35,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.sql.DataSource;
 
@@ -68,29 +70,30 @@ public class Main {
     return "index";
   }
   
-  @RequestMapping(value="/db/{id}", method=RequestMethod.GET)
-  String db(Integer id) throws SQLException {
+  @ResponseBody
+  @RequestMapping(value="/db/{id}", method=RequestMethod.GET, produces = "application/json")
+  JsonArray db(@PathVariable Integer id) throws SQLException {
 	JsonArray array = null;
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
+      System.out.println("Id: " + id);
       ResultSet rs = stmt.executeQuery("SELECT * FROM filmInfo where id = " + id);
       
       JsonArrayBuilder jab = Json.createArrayBuilder();
 
-      ArrayList<FilmInfo> output = new ArrayList<FilmInfo>();
       while (rs.next()) {
-    	  FilmInfo filmInfoObject = new FilmInfo();
     	  JsonObjectBuilder job = Json.createObjectBuilder();
-    	
-    	  job.add("naam", ((FilmInfo) rs).getNaam());
-    	  
+    	  job.add("naam", rs.getString("naam"));
+    	  job.add("beschrijving", rs.getString("beschrijving"));
+    	  System.out.println("Naam van de film " + rs.getString("naam"));
     	  jab.add(job);
       }
       
       array = jab.build();
+      System.out.println(array);
 
     }
-	return "db";
+	return array;
   }
 
   @Bean

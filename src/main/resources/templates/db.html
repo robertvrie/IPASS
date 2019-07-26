@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'db')}">
-
+<head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"/>
+	
+	<script type="text/javascript">
+		document.querySelector('#button').addEventListener("click",function(){
+			fetch("db/1")
+				.then(response => response.json())
+				.then(function(myJson){
+					var textnode = document.createTextNode(myJson.array);
+					document.querySelector("body").append(textnode);
+				});
+			});
+	</script>
+</head>
 <body>
 
 
@@ -11,14 +24,8 @@
   </ul>
 </div>
 
-<div>
-	<script>
-		fetch("db/Avengers: Endgame")
-			.then(response => response.json())
-			.then(function(myJson){
-				var textnode = document.createTextNode(myJson.naam);
-				document.querySelector("body").append(textnode);
-			});
-	</script>
+<div class="container">
+	<button id="button">klik hier pls</button>
+	
 </body>
 </html>
