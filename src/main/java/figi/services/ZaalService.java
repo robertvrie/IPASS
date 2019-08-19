@@ -5,6 +5,8 @@ import figi.pojo.Zaal;
 import java.util.List;
 
 public interface ZaalService {
+    Zaal vindOpId(Long id);
+
     List<Zaal> vindAlle();
 
     void verwijder(Long id);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ZaalServiceImpl implements ZaalService{
@@ -16,6 +17,12 @@ public class ZaalServiceImpl implements ZaalService{
     @Autowired
     public ZaalServiceImpl(ZaalRepository zaalRepository) {
         this.zaalRepository = zaalRepository;
+    }
+
+    public Zaal vindOpId(Long id){
+        Zaal zaal = zaalRepository.findById(id).orElse(null);
+
+        return zaal;
     }
 
     @Override

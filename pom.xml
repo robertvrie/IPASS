@@ -65,6 +65,10 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
+	  <dependency>
+		  <groupId>org.thymeleaf.extras</groupId>
+		  <artifactId>thymeleaf-extras-java8time</artifactId>
+	  </dependency>
   </dependencies>
 
   	<build>

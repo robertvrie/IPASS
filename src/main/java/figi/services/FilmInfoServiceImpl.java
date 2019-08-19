@@ -6,20 +6,12 @@ import figi.repositories.FilmInfoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityExistsException;
 
 @Service
 public class FilmInfoServiceImpl implements FilmInfoService{
-	private FilmInfoRepository filmInfoRepository;
-	
 	@Autowired
-	public FilmInfoServiceImpl(FilmInfoRepository filmInfoRepository) {
-		this.filmInfoRepository = filmInfoRepository;
-	}
+	private FilmInfoRepository filmInfoRepository;
 	
 	@Override
 	public List<FilmInfo> vindAlle(){

@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-/**
- * Created by jt on 1/10/17.
- */
 @Controller
 public class FilmInfoController {
     private FilmInfoService filmInfoService;
@@ -48,6 +45,7 @@ public class FilmInfoController {
     @RequestMapping("/filmInfo/new")
     public String newFilmInfo(Model model){
         model.addAttribute("filmInfo", new FilmInfo());
+
         return "filmInfo/filmInfoForm";
     }
 
@@ -56,7 +54,6 @@ public class FilmInfoController {
         if(bindingResult.hasErrors()){
             return "filmInfo/filmInfoForm";
         }
-        System.out.println(filmInfoForm.getId() + " " + filmInfoForm.getNaam());
         filmInfoService.opslaan(filmInfoForm);
 
         return "redirect:/filmInfo/show/" + filmInfoForm.getId();
